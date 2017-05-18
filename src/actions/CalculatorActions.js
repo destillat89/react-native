@@ -1,4 +1,4 @@
-import {OPERATION_PRESS, NUMBER_PRESS, EQUAL_PRESS} from '../constants/Calculator';
+import {OPERATION_PRESS} from '../constants/Calculator';
 
 
 export function calculate(op) {

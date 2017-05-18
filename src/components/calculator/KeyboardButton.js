@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   View,
-  TouchableHighlight,
+  TouchableNativeFeedback,
   Text
 } from 'react-native';
 import { styles } from './style';
@@ -22,9 +22,14 @@ class KeyboardButton extends Component {
   render() {
     const additionalStyles = (this.props.addStyle) ? this.props.addStyle : {};
     return (
-        <TouchableHighlight style={styles.keyboardButtonView} onPress={this.onPress} underlayColor='skyblue' activeOpacity={1}>
-          <Text style={[styles.text, additionalStyles]}>{this.props.text}</Text>
-        </TouchableHighlight>
+        <TouchableNativeFeedback
+          onPress={this.onPress} 
+          background={TouchableNativeFeedback.SelectableBackgroundBorderless()}
+        >
+          <View style={styles.keyboardButtonView}>
+            <Text style={[styles.text, additionalStyles]}>{this.props.text}</Text>
+          </View>
+        </TouchableNativeFeedback>
 
     );
   }
