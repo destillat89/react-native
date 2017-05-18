@@ -10,11 +10,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _reactNative = require('react-native');
 
-var _App = require('./src/containers/App');
+var _App = require('./src/containers/App/App');
 
 var _reactRedux = require('react-redux');
 
-var _store = require('./src/store/store');
+var _store = require('./src/store');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
