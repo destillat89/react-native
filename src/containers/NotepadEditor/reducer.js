@@ -1,4 +1,5 @@
-import { EDITOR_OPEN, EDITOR_NEW, EDITOR_SAVE_REQUEST, EDITOR_SAVE_SUCCESS,
+import { EDITOR_OPEN, EDITOR_NEW, EDITOR_SAVE_REQUEST, EDITOR_SAVE_SUCCESS, EDITOR_CLOSE,
+  EDITOR_DELETE_REQUEST, EDITOR_DELETE_SUCCESS, EDITOR_CHANGE_COMPLETED,
   EDITOR_CHANGE_HEADER, EDITOR_CHANGE_TEXT, EDITOR_CHANGE_MODE, EDITOR_CHANGE_COLOR } from './constants';
 
 const initialState = {
@@ -7,7 +8,9 @@ const initialState = {
   text: '',
   editMode: true,
   lastChange: undefined,
-  color: 'yellow'
+  color: 'yellow',
+  opened: true,
+  completed: false
 };
 
 export default function Editor(state = initialState, action) {
@@ -25,6 +28,12 @@ export default function Editor(state = initialState, action) {
       return Object.assign({}, state, {editMode: !state.editMode});
     case EDITOR_CHANGE_COLOR:
       return Object.assign({}, state, {color: action.payload});
+    case EDITOR_CHANGE_COMPLETED:
+      return Object.assign({}, state, {completed: !state.completed});
+    case EDITOR_CLOSE:
+    case EDITOR_SAVE_SUCCESS:
+    case EDITOR_DELETE_SUCCESS:
+      return Object.assign({}, state, {opened: false});
     default:
       return state;
   }

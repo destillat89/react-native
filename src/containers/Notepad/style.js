@@ -5,9 +5,8 @@ export const styles = StyleSheet.create({
     flex: 1
   },
   element: {
-    height: 50,
-    borderWidth: 1,
-    backgroundColor: 'yellow',
+    height: 57,
+    borderWidth: 0.5,
     margin: 5,
     marginBottom: 0
   },
@@ -17,7 +16,12 @@ export const styles = StyleSheet.create({
   },
   defaultText: {
     fontSize: 24,
-    padding: 5
+    padding: 5,
+    color: 'black'
+  },
+  completedText: {
+    color: 'dimgrey',
+    textDecorationLine: 'line-through'
   },
   noteTypePicker: {
     backgroundColor: 'white',
@@ -30,9 +34,60 @@ export const styles = StyleSheet.create({
   },
   noteTypePickerItem: {
     height: 50,
-    width: 200,
+    width: 250,
     borderTopWidth: 1,
     borderTopColor: 'grey',
     justifyContent: 'center'
   }
 });
+
+// let headerKoef = 0.6;
+// let backKoef = 0.3;
+export const colors = {
+  yellow: {
+    main: 'yellow',
+    header: 'rgba(230, 192, 0, 0.6)',
+    back: 'rgba(255, 255, 0, 0.2)'
+  },
+  orange: {
+    main: 'orange',
+    header: 'rgba(255, 165, 0, 0.7)',
+    back: 'rgba(255, 165, 0, 0.3)'
+  },
+  red: {
+    main: 'red',
+    header: 'rgba(255, 0, 0, 0.6)',
+    back: 'rgba(255, 0, 0, 0.15)'
+  },
+  green: {
+    main: 'green',
+    header: 'rgba(0, 100, 0, 0.6)',
+    back: 'rgba(0, 255, 0, 0.10)'
+  },
+  blue: {
+    main: 'blue',
+    header: 'rgba(0, 64, 255, 0.4)',
+    back: 'rgba(0, 0, 255, 0.10)'
+  },
+  purple: {
+    main: 'purple',
+    header: 'rgba(128, 0, 128, 0.5)',
+    back: 'rgba(128, 0, 128, 0.2)'
+  },
+  black: {
+    main: 'black',
+    header: 'rgba(0, 0, 0, 0.6)',
+    back: 'rgba(0, 0, 0, 0.2)'
+  },
+  grey: {
+    main: 'grey',
+    header: 'rgba(128, 128, 128, 0.5)',
+    back: 'rgba(128, 128, 128, 0.15)'
+  },
+  white: {
+    main: 'white',
+    header: 'rgba(192, 192, 192, 0.3)',
+    back: 'rgba(255, 255, 255, 0.4)'
+  }
+
+};

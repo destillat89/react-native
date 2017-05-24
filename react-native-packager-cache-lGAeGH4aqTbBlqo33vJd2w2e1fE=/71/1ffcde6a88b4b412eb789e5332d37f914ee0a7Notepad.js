@@ -38,6 +38,10 @@ var _reactNativeModalDropdown = require('react-native-modal-dropdown');
 
 var _reactNativeModalDropdown2 = _interopRequireDefault(_reactNativeModalDropdown);
 
+var _NotepadElementMenu = require('./NotepadElementMenu');
+
+var _NotepadElementMenu2 = _interopRequireDefault(_NotepadElementMenu);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -99,7 +103,8 @@ var Notepad = _wrapComponent('Notepad')((_temp = _class = function (_Component) 
           renderRow: function renderRow(rowData) {
             return _react3.default.createElement(_NotepadElement2.default, { data: rowData, navigation: _this2.props.navigation });
           }
-        })
+        }),
+        _react3.default.createElement(_NotepadElementMenu2.default, null)
       );
     }
   }]);

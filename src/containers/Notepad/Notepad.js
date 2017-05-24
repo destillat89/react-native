@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import * as notepadActions from './actions';
 
 import ModalDropdown from 'react-native-modal-dropdown';
+import NotepadElementMenu from './NotepadElementMenu';
 
 class Notepad extends Component {
   static navigationOptions = ({navigation}) => ({
@@ -49,6 +50,7 @@ class Notepad extends Component {
           enableEmptySections={true}
           renderRow={(rowData) => <NotepadElement data={rowData} navigation={this.props.navigation} />}
         />
+        <NotepadElementMenu />
       </View>
     );
   }

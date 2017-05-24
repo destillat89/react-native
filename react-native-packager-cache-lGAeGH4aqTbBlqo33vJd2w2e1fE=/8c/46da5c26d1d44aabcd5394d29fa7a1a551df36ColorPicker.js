@@ -187,7 +187,7 @@ var ColorPicker = _wrapComponent('ColorPicker')(function (_Component) {
           { onPress: function onPress() {
               _this2.setModalVisible(true);
             } },
-          _react3.default.createElement(_reactNative.View, { style: { width: 40, height: 40, backgroundColor: this.props.note.color } })
+          _react3.default.createElement(_reactNative.View, { style: { width: 40, height: 40, backgroundColor: this.props.note.color, borderRadius: 5 } })
         )
       );
     }

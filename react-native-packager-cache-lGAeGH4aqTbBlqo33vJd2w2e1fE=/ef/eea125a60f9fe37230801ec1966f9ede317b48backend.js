@@ -1223,11 +1223,11 @@
                     if ("string" == typeof renderer.version) {
                         if (renderer.bundleType > 0) return "development";
                         var findFiberCode = toString.call(renderer.findFiberByHostInstance);
-                        return 0 !== findFiberCode.indexOf("function") ? "production" : /function[\s\w]*\(\w[,\)]/.test(findFiberCode) ? "production" : "unminified";
+                        return 0 !== findFiberCode.indexOf("function") ? "production" : findFiberCode.indexOf("getClosestInstanceFromNode") !== -1 ? "unminified" : "production";
                     }
                     if (renderer.Mount && renderer.Mount._renderNewRootComponent) {
                         var renderRootCode = toString.call(renderer.Mount._renderNewRootComponent);
-                        return 0 !== renderRootCode.indexOf("function") ? "production" : renderRootCode.indexOf("storedMeasure") !== -1 ? "development" : renderRootCode.indexOf("should be a pure function") !== -1 ? renderRootCode.indexOf("NODE_ENV") !== -1 ? "development" : renderRootCode.indexOf("development") !== -1 ? "development" : renderRootCode.indexOf("true") !== -1 ? "development" : /function\s*\(\w\,/.test(renderRootCode) ? "development" : "unminified" : /function\s*\(\w\,/.test(renderRootCode) ? renderRootCode.indexOf("._registerComponent") !== -1 ? "outdated" : "production" : "unminified";
+                        return 0 !== renderRootCode.indexOf("function") ? "production" : renderRootCode.indexOf("storedMeasure") !== -1 ? "development" : renderRootCode.indexOf("should be a pure function") !== -1 ? renderRootCode.indexOf("NODE_ENV") !== -1 ? "development" : renderRootCode.indexOf("development") !== -1 ? "development" : renderRootCode.indexOf("true") !== -1 ? "development" : renderRootCode.indexOf("nextElement") !== -1 || renderRootCode.indexOf("nextComponent") !== -1 ? "unminified" : "development" : renderRootCode.indexOf("nextElement") !== -1 || renderRootCode.indexOf("nextComponent") !== -1 ? "unminified" : renderRootCode.indexOf("._registerComponent") !== -1 ? "outdated" : "production";
                     }
                 } catch (err) {}
                 return "production";

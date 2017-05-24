@@ -1,4 +1,4 @@
-import {NOTES_REQUEST, NOTES_SUCCESS, NOTES_FAIL} from './constants';
+import {NOTES_REQUEST, NOTES_SUCCESS, NOTES_FAIL, ELEMENT_MENU_VISIBILITY} from './constants';
 import { AsyncStorage } from 'react-native';
 
 export function getDataSource() {
@@ -19,4 +19,11 @@ export function getDataSource() {
       });
     });
 	}
+}
+
+export function setElementMenuVisibility(visible) {
+  return {
+    type: ELEMENT_MENU_VISIBILITY,
+    payload: visible
+  };
 }

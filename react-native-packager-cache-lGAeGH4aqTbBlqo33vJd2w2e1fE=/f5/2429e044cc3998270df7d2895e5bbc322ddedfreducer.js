@@ -16,7 +16,9 @@ var initialState = {
   text: '',
   editMode: true,
   lastChange: undefined,
-  color: 'yellow'
+  color: 'yellow',
+  opened: true,
+  completed: false
 };
 
 function Editor() {
@@ -40,6 +42,12 @@ function Editor() {
       return _extends({}, state, { editMode: !state.editMode });
     case _constants.EDITOR_CHANGE_COLOR:
       return _extends({}, state, { color: action.payload });
+    case _constants.EDITOR_CHANGE_COMPLETED:
+      return _extends({}, state, { completed: !state.completed });
+    case _constants.EDITOR_CLOSE:
+    case _constants.EDITOR_SAVE_SUCCESS:
+    case _constants.EDITOR_DELETE_SUCCESS:
+      return _extends({}, state, { opened: false });
     default:
       return state;
   }

@@ -10,7 +10,15 @@ export const styles = StyleSheet.create({
   },
   defaultText: {
     fontSize: 24,
-    padding: 5
+    padding: 5,
+    color: 'black'
+  },
+  completedText: {
+    color: 'grey',
+    textDecorationLine: 'line-through'
+  },
+  underline: {
+    textDecorationLine: 'underline'
   },
   colorPicker: {
     backgroundColor: 'white',
@@ -30,6 +38,7 @@ export const styles = StyleSheet.create({
     height: 80,
     margin: 5,
     borderColor: 'grey',
-    borderWidth: 1
+    borderWidth: 1,
+    borderRadius: 5
   }
 });

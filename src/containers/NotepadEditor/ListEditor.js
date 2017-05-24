@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TextInput, Text, AsyncStorage, Button } from 'react-native';
+import { View, TextInput, Text, AsyncStorage, Button, Animated, ScrollView } from 'react-native';
 import { styles } from './style';
 
 import { bindActionCreators } from 'redux';
@@ -50,6 +50,8 @@ class ListEditor extends Component {
     );
   }
 }
+
+
 
 function mapStateToProps(state){
   return {

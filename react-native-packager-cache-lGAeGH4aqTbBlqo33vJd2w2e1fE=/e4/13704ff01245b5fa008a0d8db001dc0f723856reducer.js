@@ -9,7 +9,9 @@ exports.default = Notepad;
 var _constants = require('./constants');
 
 var initialState = {
-  data: []
+  data: [],
+  elementMenuVisible: false,
+  selectedNote: undefined
 };
 
 function Notepad() {
@@ -19,7 +21,8 @@ function Notepad() {
   switch (action.type) {
     case _constants.NOTES_SUCCESS:
       return _extends({}, state, { data: action.payload });
-
+    case _constants.ELEMENT_MENU_VISIBILITY:
+      return _extends({}, state, { elementMenuVisible: action.payload });
     default:
       return state;
   }

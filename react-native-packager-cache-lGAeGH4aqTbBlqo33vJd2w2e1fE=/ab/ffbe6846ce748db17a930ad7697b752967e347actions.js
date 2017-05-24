@@ -2,6 +2,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.getDataSource = getDataSource;
+exports.setElementMenuVisibility = setElementMenuVisibility;
 
 var _constants = require('./constants');
 
@@ -22,5 +23,12 @@ function getDataSource() {
         });
       });
     });
+  };
+}
+
+function setElementMenuVisibility(visible) {
+  return {
+    type: _constants.ELEMENT_MENU_VISIBILITY,
+    payload: visible
   };
 }

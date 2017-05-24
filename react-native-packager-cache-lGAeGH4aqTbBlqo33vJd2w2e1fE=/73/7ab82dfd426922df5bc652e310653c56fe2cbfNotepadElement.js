@@ -22,6 +22,20 @@ var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
 
+var _reactRedux = require('react-redux');
+
+var _redux = require('redux');
+
+var _actions = require('./actions');
+
+var notepadActions = _interopRequireWildcard(_actions);
+
+var _actions2 = require('../NotepadEditor/actions');
+
+var editorActions = _interopRequireWildcard(_actions2);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -61,6 +75,8 @@ var NotepadElement = _wrapComponent('NotepadElement')(function (_Component) {
   _createClass(NotepadElement, [{
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       var navigate = this.props.navigation.navigate;
 
       var _props$data = _slicedToArray(this.props.data, 2),
@@ -71,25 +87,32 @@ var NotepadElement = _wrapComponent('NotepadElement')(function (_Component) {
       var dateOptions = { day: 'numeric', month: 'short' };
 
       var customColor = {};
-      if (data.color) customColor.backgroundColor = data.color;
+      if (data.color) {
+        customColor.backgroundColor = _style.colors[data.color].back;
+        customColor.borderLeftColor = _style.colors[data.color].main;
+        customColor.borderLeftWidth = 5;
+      }
 
       return _react3.default.createElement(
         _reactNative.View,
-        { style: [_style.styles.element, customColor] },
+        { style: [_style.styles.element, { borderColor: 'silver' }] },
         _react3.default.createElement(
           _reactNative.TouchableNativeFeedback,
           {
             onPress: function onPress() {
               return navigate('TextEditor', { data: [key, data] });
             },
+            onLongPress: function onLongPress() {
+              _this2.props.editorActions.openNote([key, data]);_this2.props.notepadActions.setElementMenuVisibility(true);
+            },
             background: _reactNative.TouchableNativeFeedback.SelectableBackgroundBorderless()
           },
           _react3.default.createElement(
             _reactNative.View,
-            { style: { flexDirection: 'row', alignItems: 'center', height: 45 } },
+            { style: [{ flexDirection: 'row', alignItems: 'center', height: 56 }, customColor] },
             _react3.default.createElement(
               _reactNative.Text,
-              { style: [_style.styles.defaultText, { flex: 1 }] },
+              { style: [_style.styles.defaultText, { flex: 1 }, data.completed ? _style.styles.completedText : {}] },
               data.header
             ),
             _react3.default.createElement(
@@ -106,4 +129,11 @@ var NotepadElement = _wrapComponent('NotepadElement')(function (_Component) {
   return NotepadElement;
 }(_react2.Component));
 
-exports.default = NotepadElement;
+function mapDispatchToProps(dispatch) {
+  return {
+    notepadActions: (0, _redux.bindActionCreators)(notepadActions, dispatch),
+    editorActions: (0, _redux.bindActionCreators)(editorActions, dispatch)
+  };
+}
+
+exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(NotepadElement);

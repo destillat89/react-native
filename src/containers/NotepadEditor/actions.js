@@ -1,4 +1,5 @@
-import {EDITOR_OPEN, EDITOR_NEW, EDITOR_SAVE_REQUEST, EDITOR_SAVE_SUCCESS,
+import {EDITOR_OPEN, EDITOR_NEW, EDITOR_SAVE_REQUEST, EDITOR_SAVE_SUCCESS, EDITOR_CLOSE,
+  EDITOR_DELETE_REQUEST, EDITOR_DELETE_SUCCESS, EDITOR_CHANGE_COMPLETED,
   EDITOR_CHANGE_HEADER, EDITOR_CHANGE_TEXT, EDITOR_CHANGE_MODE, EDITOR_CHANGE_COLOR} from './constants';
 import { AsyncStorage } from 'react-native';
 
@@ -19,6 +20,58 @@ export function changeColor(color) {
   return {
     type: EDITOR_CHANGE_COLOR,
     payload: color
+  }
+}
+
+export function closeNote() {
+  return {
+    type: EDITOR_CLOSE
+  }
+}
+
+export function saveNote(noteState) {
+  return function(dispatch)	{
+    dispatch({
+      type:	EDITOR_SAVE_REQUEST
+    });
+
+    //this.props.editorActions.saveNote(this.props.note);
+    //let noteState = this.props.note;
+    let {key} = noteState;
+    if (!key) key = ''+Date.now();
+    let data = {
+      header: (noteState.header ? noteState.header : noteState.text),
+      text: noteState.text, lastChange: Date.now(), color: noteState.color, completed: noteState.completed};
+    //try {
+    AsyncStorage.setItem(key, JSON.stringify(data), () => {
+      dispatch({
+        type: EDITOR_SAVE_SUCCESS
+      });
+      // this.props.notepadActions.getDataSource();
+      // this.props.navigation.goBack();
+    });
+  }
+}
+
+export function deleteNote(noteState) {
+  return function(dispatch)	{
+    dispatch({
+      type:	EDITOR_DELETE_REQUEST
+    });
+
+    //let noteState = this.props.note;
+    let {key} = noteState;
+
+    if (!key) {alert('A new note can not be deleted'); return;}
+    // let data = {header: (noteState.header ? noteState.header : noteState.text), text: noteState.text};
+    //try {
+    AsyncStorage.removeItem(key, () => {
+      dispatch({
+        type: EDITOR_DELETE_SUCCESS
+      });
+      // this.props.notepadActions.getDataSource();
+      // this.props.navigation.goBack();
+    });
   }
 }
 
@@ -69,4 +122,12 @@ export function changeMode() {
   return {
     type: EDITOR_CHANGE_MODE
   }
+}
+
+export function changeCompleted() {
+  return {
+    type: EDITOR_CHANGE_COMPLETED
+  }
+
+
 }

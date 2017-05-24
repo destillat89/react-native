@@ -5,6 +5,10 @@ import { styles } from './style';
 import ModalDropdown from 'react-native-modal-dropdown';
 import NoteTypePicker from './NoteTypePicker';
 
+// import { connect } from 'react-redux';
+// import { bindActionCreators } from 'redux';
+// import * as editorActions from '../NotepadEditor/actions';
+
 export default class TopBarNotepad extends Component {
   constructor(props) {
     super(props);
@@ -61,3 +65,11 @@ export default class TopBarNotepad extends Component {
     );
   }
 }
+
+// function mapDispatchToProps(dispatch){
+//   return {
+//     editorActions: bindActionCreators(editorActions, dispatch)
+//   }
+// }
+//
+// export default connect(null, mapDispatchToProps)(TopBarNotepad);

@@ -10,13 +10,19 @@ var _index = require('./../../../node_modules/react-transform-hmr/lib/index.js')
 
 var _index2 = _interopRequireDefault(_index);
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _class, _temp;
 
 var _reactNative = require('react-native');
 
+var _reactNative2 = _interopRequireDefault(_reactNative);
+
 var _style = require('./style');
+
+var _style2 = require('../Notepad/style');
 
 var _redux = require('redux');
 
@@ -43,6 +49,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var _components = {
   TextEditor: {
     displayName: 'TextEditor'
+  },
+  AutoExpandingTextInputWithBackRows: {
+    displayName: 'AutoExpandingTextInputWithBackRows'
+  },
+  CustomTextInput: {
+    displayName: 'CustomTextInput'
   }
 };
 
@@ -68,6 +80,9 @@ var TextEditor = _wrapComponent('TextEditor')((_temp = _class = function (_Compo
     var _this = _possibleConstructorReturn(this, (TextEditor.__proto__ || Object.getPrototypeOf(TextEditor)).call(this, props));
 
     _this._onTextChange = _this._onTextChange.bind(_this);
+    _this.state = {
+      height: 0
+    };
 
     return _this;
   }
@@ -89,16 +104,15 @@ var TextEditor = _wrapComponent('TextEditor')((_temp = _class = function (_Compo
   }, {
     key: 'render',
     value: function render() {
+
       return _react3.default.createElement(
         _reactNative.View,
-        { style: _style.styles.main },
-        _react3.default.createElement(_reactNative.TextInput, {
-          style: [_style.styles.defaultText, { flex: 10 }, { textAlign: 'left', textAlignVertical: 'top', borderBottomWidth: 1 }],
+        { style: { flex: 1, backgroundColor: _style2.colors[this.props.note.color].back } },
+        _react3.default.createElement(AutoExpandingTextInputWithBackRows, {
           value: this.props.note.text,
-          editable: this.props.note.editMode,
           onChangeText: this._onTextChange,
-          multiline: true,
-          returnKeyType: 'none'
+          editable: this.props.note.editMode,
+          borderBottomColor: _style2.colors[this.props.note.color].header
         })
       );
     }
@@ -111,6 +125,114 @@ var TextEditor = _wrapComponent('TextEditor')((_temp = _class = function (_Compo
     header: _react3.default.createElement(_TopBarEditor2.default, { navigation: navigation })
   };
 }, _temp));
+
+var AutoExpandingTextInputWithBackRows = _wrapComponent('AutoExpandingTextInputWithBackRows')(function (_React$Component) {
+  _inherits(AutoExpandingTextInputWithBackRows, _React$Component);
+
+  function AutoExpandingTextInputWithBackRows(props) {
+    _classCallCheck(this, AutoExpandingTextInputWithBackRows);
+
+    var _this2 = _possibleConstructorReturn(this, (AutoExpandingTextInputWithBackRows.__proto__ || Object.getPrototypeOf(AutoExpandingTextInputWithBackRows)).call(this, props));
+
+    _this2.state = { text: _this2.props.text, height: 0, posY: 0 };
+
+    return _this2;
+  }
+
+  _createClass(AutoExpandingTextInputWithBackRows, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      this._animatedValue = new _reactNative.Animated.Value(0);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this3 = this;
+
+      var event = _reactNative.Animated.event([{
+        nativeEvent: {
+          contentOffset: {
+            y: this._animatedValue
+          }
+        }
+      }], { useNativeDriver: true });
+
+      var interpolatedY = this._animatedValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, -1]
+      });
+
+      var array = [];
+
+      for (var ind = 0; ind <= 50; ind++) {
+        array.push(_react3.default.createElement(_reactNative.View, { style: { height: 28, borderBottomWidth: 1, borderBottomColor: this.props.borderBottomColor }, key: ind }));
+      }
+
+      return _react3.default.createElement(
+        _reactNative.View,
+        { style: { flex: 1 } },
+        _react3.default.createElement(
+          _reactNative.Animated.View,
+          {
+            ref: function ref(component) {
+              return _this3._backView = component;
+            },
+            style: [{ transform: [{ translateY: interpolatedY }] }, { paddingHorizontal: 5 }]
+
+          },
+          array
+        ),
+        _react3.default.createElement(
+          _reactNative.View,
+          { style: [{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }, { flex: 1 }] },
+          _react3.default.createElement(AnimatedTextInput, _extends({}, this.props, {
+            multiline: true,
+
+            onLayout: function onLayout(event) {
+              _this3.setState({
+                height: event.nativeEvent.layout.height
+              });
+            },
+
+            ref: function ref(component) {
+              return _this3._textInput = component;
+            },
+            autoCapitalize: 'sentences',
+            onScroll: event,
+            scrollEventThrottle: 1,
+            underlineColorAndroid: 'transparent',
+            style: [_style.styles.defaultText, { flex: 1 }, { textAlign: 'left', textAlignVertical: 'top', borderBottomWidth: 1, lineHeight: 28 }, { height: Math.max(28, this.state.height) }],
+
+            returnKeyType: 'done'
+          }))
+        )
+      );
+    }
+  }]);
+
+  return AutoExpandingTextInputWithBackRows;
+}(_react3.default.Component));
+
+var CustomTextInput = _wrapComponent('CustomTextInput')(function (_Component2) {
+  _inherits(CustomTextInput, _Component2);
+
+  function CustomTextInput() {
+    _classCallCheck(this, CustomTextInput);
+
+    return _possibleConstructorReturn(this, (CustomTextInput.__proto__ || Object.getPrototypeOf(CustomTextInput)).apply(this, arguments));
+  }
+
+  _createClass(CustomTextInput, [{
+    key: 'render',
+    value: function render() {
+      return _react3.default.createElement(_reactNative.TextInput, this.props);
+    }
+  }]);
+
+  return CustomTextInput;
+}(_react2.Component));
+
+var AnimatedTextInput = _reactNative.Animated.createAnimatedComponent(CustomTextInput);
 
 function mapStateToProps(state) {
   return {

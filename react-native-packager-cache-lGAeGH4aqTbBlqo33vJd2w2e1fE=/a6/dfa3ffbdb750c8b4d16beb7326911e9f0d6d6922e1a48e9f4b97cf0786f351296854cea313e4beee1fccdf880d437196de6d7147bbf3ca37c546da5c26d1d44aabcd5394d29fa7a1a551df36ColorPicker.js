@@ -140,7 +140,7 @@ var ColorPicker = _wrapComponent('ColorPicker')(function (_Component) {
           _this2.changeColor('white');_this2.setModalVisible(!_this2.state.modalVisible);
         } }, _react3.default.createElement(_reactNative.View, { style: [_style.styles.colorPickerItem, { backgroundColor: 'white' }] }))))))), _react3.default.createElement(_reactNative.TouchableHighlight, { onPress: function onPress() {
           _this2.setModalVisible(true);
-        } }, _react3.default.createElement(_reactNative.View, { style: { width: 40, height: 40, backgroundColor: this.props.note.color } })));
+        } }, _react3.default.createElement(_reactNative.View, { style: { width: 40, height: 40, backgroundColor: this.props.note.color, borderRadius: 5 } })));
     }
   }]);
 

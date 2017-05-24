@@ -66,7 +66,7 @@ class ColorPicker extends Component {
           </TouchableWithoutFeedback>
         </Modal>
         <TouchableHighlight onPress={() => { this.setModalVisible(true) }}>
-          <View style={{width: 40, height: 40, backgroundColor: this.props.note.color}}>
+          <View style={{width: 40, height: 40, backgroundColor: this.props.note.color, borderRadius: 5}}>
           </View>
         </TouchableHighlight>
       </View>

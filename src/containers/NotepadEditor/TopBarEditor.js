@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Button, Text, TextInput, AsyncStorage, TouchableNativeFeedback, Image, TouchableHighlight, Picker, Modal, TouchableWithoutFeedback } from 'react-native';
 import { styles } from './style';
+import { colors } from '../Notepad/style';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -14,53 +15,69 @@ import ColorPicker from './ColorPicker';
 class TopBarEditor extends Component {
   constructor(props) {
     super(props);
-    this._saveData = this._saveData.bind(this);
+    // this._saveData = this._saveData.bind(this);
     this._onHeaderChange = this._onHeaderChange.bind(this);
     this._onEditModeChange = this._onEditModeChange.bind(this);
     this._dropdown_renderRow = this._dropdown_renderRow.bind(this);
-    this._deleteNote = this._deleteNote.bind(this);
+    this._changeCompleted = this._changeCompleted.bind(this);
+    // this._deleteNote = this._deleteNote.bind(this);
   }
-  _saveData() {
-    //this.props.editorActions.saveNote(this.props.note);
-    let noteState = this.props.note;
-    let {key} = noteState;
-    if (!key) key = ''+Date.now();
-    let data = {header: (noteState.header ? noteState.header : noteState.text), text: noteState.text, lastChange: Date.now(), color: noteState.color};
-    //try {
-    AsyncStorage.setItem(key, JSON.stringify(data), () => {
-      this.props.notepadActions.getDataSource();
-      this.props.navigation.goBack();
-    });
-  }
+  // _saveData() {
+  //   //this.props.editorActions.saveNote(this.props.note);
+  //   let noteState = this.props.note;
+  //   let {key} = noteState;
+  //   if (!key) key = ''+Date.now();
+  //   let data = {header: (noteState.header ? noteState.header : noteState.text), text: noteState.text, lastChange: Date.now(), color: noteState.color};
+  //   //try {
+  //   AsyncStorage.setItem(key, JSON.stringify(data), () => {
+  //     this.props.notepadActions.getDataSource();
+  //     this.props.navigation.goBack();
+  //   });
+  // }
   _onEditModeChange() {
     this.props.editorActions.changeMode();
   }
   _onHeaderChange(text) {
     this.props.editorActions.changeHeader(text);
   }
-  _deleteNote() {
-    let noteState = this.props.note;
-    let {key} = noteState;
+  // _deleteNote() {
+  //   let noteState = this.props.note;
+  //   let {key} = noteState;
+  //
+  //   if (!key) {alert('A new note can not be deleted'); return;}
+  //   // let data = {header: (noteState.header ? noteState.header : noteState.text), text: noteState.text};
+  //   //try {
+  //   AsyncStorage.removeItem(key, () => {
+  //     this.props.notepadActions.getDataSource();
+  //     this.props.navigation.goBack();
+  //   });
+  // }
 
-    if (!key) {alert('A new note can not be deleted'); return;}
-    // let data = {header: (noteState.header ? noteState.header : noteState.text), text: noteState.text};
-    //try {
-    AsyncStorage.removeItem(key, () => {
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.note.opened) {
       this.props.notepadActions.getDataSource();
       this.props.navigation.goBack();
-    });
+    }
+    // if (nextProps.note.completed !== this.props.note.completed) {
+    //   this.props.editorActions.saveNote(nextProps.note);
+    // }
+  }
+  _changeCompleted() {
+    //this.props.editorActions.changeCompleted();
+    this.props.editorActions.saveNote(Object.assign({}, this.props.note, {completed: !this.props.note.completed}));
+    // this.props.editorActions.saveNote(this.props.note);
   }
   render() {
     const MENU_ITEMS = [
-      {header: 'Delete', icon: require('../../../img/ic_cancel_black_36dp.png'), action: this._deleteNote},
-      {header: 'Close', icon: require('../../../img/ic_check_black_36dp.png'), action: undefined}
+      {header: 'Complete', icon: require('../../../img/ic_check_black_36dp.png'), action: this._changeCompleted},
+      {header: 'Delete', icon: require('../../../img/ic_cancel_black_36dp.png'), action: this.props.editorActions.deleteNote.bind(null, this.props.note)},
     ];
 
     let headerElement, editModeButton;
     if (this.props.note.editMode) {
       headerElement = (
         <TextInput
-          style={[styles.defaultText, {flex: 1}]}
+          style={[styles.defaultText, {flex: 1}, (this.props.note.completed ? styles.completedText : {})]}
           value={this.props.note.header}
           onChangeText={this._onHeaderChange}
           autoFocus={this.props.note.editMode}
@@ -69,7 +86,7 @@ class TopBarEditor extends Component {
       editModeButton = (
         <View style={{flexDirection: 'row'}}>
           <TouchableNativeFeedback
-            onPress={this._saveData}
+            onPress={this.props.editorActions.saveNote.bind(null, this.props.note)}
             background={TouchableNativeFeedback.SelectableBackgroundBorderless()}
           >
             <View>
@@ -99,7 +116,7 @@ class TopBarEditor extends Component {
     }
 
     return (
-      <View style={{flexDirection: 'row', alignItems: 'center', height: 50, padding: 5, backgroundColor: 'white'}}>
+      <View style={{flexDirection: 'row', alignItems: 'center', height: 50, padding: 5, backgroundColor: colors[this.props.note.color].header}}>
         <View style={{flex: 7}}>
           {headerElement}
         </View>
